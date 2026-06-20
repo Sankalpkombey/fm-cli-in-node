@@ -1,0 +1,8 @@
+{
+  "name": "fm-cli",
+  "version": "1.0.0",
+  "main": "fm.js",
+  "bin": {
+    "fm": "./fm.js"
+  }
+}
