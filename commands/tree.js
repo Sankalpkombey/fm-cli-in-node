@@ -19,9 +19,16 @@ async function tree(dirPath = '.', prefix = '', isRoot = true) {
             return a.name.localeCompare(b.name);
         })
 
+        const ignored = ['.git'];
+
         for (let i=0; i < entries.length; i++) {
             const entry = entries[i];
-            const isLast = i === entries.length - 1;
+
+            if (ignored.includes(entry.name)) {
+              continue;
+           }
+
+           const isLast = i === entries.length - 1;
 
             const connector = isLast ? '└── ' : '├── ';
             const icon = entry.isDirectory() ? c('blue', '📁 ') : c('cyan', '📄 ');

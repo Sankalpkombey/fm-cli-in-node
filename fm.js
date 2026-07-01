@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const registry = require('./utils/registry');
 const copy = require('./commands/copy');
 const create = require('./commands/create');
 const deleteFile = require('./commands/delete');
@@ -31,18 +32,21 @@ ${c('yellow', 'Usage:')}
     fm search <pattern> <dir>       Search files by pattern (e.g. *.js)
 `
 async function main() {
-    switch(command){
-        case 'list':    await list(arg1);         break
-        case 'tree':    await tree(arg1);         break
-        case 'read':    await read(arg1);         break
-        case 'create':  await create(arg1);       break
-        case 'mkdir':   await mkdir(arg1);        break
-        case 'delete':  await deleteFile(arg1);   break
-        case 'move':    await move(arg1, arg2);   break
-        case 'copy':    await copy(arg1, arg2);   break
-        case 'search':  await search(arg1, arg2); break
-        default:
-            console.log(help)
+
+    registry.addCommand('list', list);
+    registry.addCommand('tree', tree);
+    registry.addCommand('read', read);
+    registry.addCommand('create', create);
+    registry.addCommand('mkdir', mkdir);
+    registry.addCommand('delete', deleteFile);
+    registry.addCommand('move', move);
+    registry.addCommand('copy', copy);
+    registry.addCommand('search', search);
+
+    if (registry.hasCommand(command)) {
+        await registry.getCommand(command)(arg1, arg2)
+    } else {
+        console.log(help)
     }
 }
 
